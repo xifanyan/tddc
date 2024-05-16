@@ -1,0 +1,3283 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "TotalDiscovery API",
+        "description": "TotalDiscovery use a classic REST/JSON model for our API. It uses easily understood resource-based routes that allow the URL to be a natural part of the user experience. It also uses a straightforward API token authentication model to make it easy and safe to get started right away. All request will return to you in JSON format including errors\n\nUsing these API's, once can operate on important resources like Matters, Companies, Custodians, LegalHolds\n\n**Endpoints grouped under the tag `Edge` are experimental and subject to change.**",
+        "version": "1.0.3",
+        "contact": {
+            "name": "support",
+            "email": "support@totaldiscovery.com"
+        }
+    },
+    "tags": [
+        {
+            "name": "Customers"
+        },
+        {
+            "name": "Companies"
+        },
+        {
+            "name": "Matters"
+        },
+        {
+            "name": "Legal Holds"
+        },
+        {
+            "name": "Collections"
+        },
+        {
+            "name": "Custodians"
+        },
+        {
+            "name": "Directories"
+        },
+        {
+            "name": "Searches"
+        }
+    ],
+    "servers": [
+        {
+            "url": "https://app.totaldiscovery.com/api/v1"
+        }
+    ],
+    "paths": {
+        "/custodians/{custodian_id}": {
+            "get": {
+                "tags": [
+                    "Custodians"
+                ],
+                "summary": "Get a custodian",
+                "description": "Shows a custodian and custodian merge history",
+                "operationId": "GET_custodians-custodian_id",
+                "parameters": [
+                    {
+                        "name": "custodian_id",
+                        "in": "path",
+                        "description": "Custodian id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A custodian",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Custodian"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Custodians"
+                ],
+                "summary": "Update a custodian",
+                "description": "Updates a custodian",
+                "operationId": "PATCH_custodians-custodian_id",
+                "parameters": [
+                    {
+                        "name": "custodian_id",
+                        "in": "path",
+                        "description": "Custodian id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Custodian"
+                            }
+                        }
+                    },
+                    "required": false
+                },
+                "responses": {
+                    "200": {
+                        "description": "A custodian",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Custodian"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "An array of custodian sync errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CustodianSyncError"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ],
+                "x-codegen-request-body-name": "body"
+            }
+        },
+        "/custodians/{custodian_id}/traits": {
+            "get": {
+                "tags": [
+                    "Custodians",
+                    "Edge"
+                ],
+                "summary": "List unique trait names for a custodian",
+                "description": "List all unique trait names for a custodian.",
+                "operationId": "GET_custodians-custodian_id-traits",
+                "parameters": [
+                    {
+                        "name": "custodian_id",
+                        "in": "path",
+                        "description": "Custodian id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A trait names response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TraitNamesResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            }
+        },
+        "/custodians/{custodian_id}/traits/{trait_name}": {
+            "get": {
+                "tags": [
+                    "Custodians",
+                    "Edge"
+                ],
+                "summary": "List unique trait values for a trait name for a custodian",
+                "description": "List all unique trait values for a trait name for a custodian.",
+                "operationId": "GET_custodians-custodian_id-traits-trait_name",
+                "parameters": [
+                    {
+                        "name": "custodian_id",
+                        "in": "path",
+                        "description": "Custodian id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "trait_name",
+                        "in": "path",
+                        "description": "Trait name (e.g. 'Group')",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A hash map array of trait name to trait values",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/traitvaluesresponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            }
+        },
+        "/customers": {
+            "get": {
+                "tags": [
+                    "Customers"
+                ],
+                "summary": "List all customers",
+                "operationId": "GET_customers",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Customer"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            }
+        },
+        "/customers/{customer_id}": {
+            "get": {
+                "tags": [
+                    "Customers"
+                ],
+                "summary": "Get a single customer",
+                "operationId": "GET_customers-customer_id",
+                "parameters": [
+                    {
+                        "name": "customer_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Customer"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Customers"
+                ],
+                "summary": "Update a customer",
+                "description": "Updates a customer.\n\nTo change CLO to Customer level: Set `delegate_clo` to false and `default_directory_id` to a valid directory.\n\nTo change CLO to Company level: Set `delegate_clo` to true and `default_directory_id` to nil.",
+                "operationId": "PATCH_customers-customer_id",
+                "parameters": [
+                    {
+                        "name": "customer_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "salesperson": {
+                                        "type": "string"
+                                    },
+                                    "email_reply_to": {
+                                        "type": "string"
+                                    },
+                                    "email_display_name": {
+                                        "type": "string"
+                                    },
+                                    "combine_hold_reminders": {
+                                        "type": "boolean"
+                                    },
+                                    "use_email_send_as": {
+                                        "type": "boolean"
+                                    },
+                                    "email_send_as_domains": {
+                                        "type": "string"
+                                    },
+                                    "billing_start_date": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "include_active_holds_in_release_notice": {
+                                        "type": "integer"
+                                    },
+                                    "custom_company_label": {
+                                        "type": "string"
+                                    },
+                                    "inline_images_as_attachments": {
+                                        "type": "boolean"
+                                    },
+                                    "license_code": {
+                                        "type": "string"
+                                    },
+                                    "delegate_clo": {
+                                        "type": "boolean"
+                                    },
+                                    "default_directory_id": {
+                                        "minimum": 0,
+                                        "type": "integer",
+                                        "description": "The directory assigned to new companies when not delegating CLO."
+                                    }
+                                },
+                                "example": {
+                                    "name": "consequat eu",
+                                    "salesperson": "tempor ad esse nisi",
+                                    "email_reply_to": "Duis",
+                                    "email_display_name": "fugiat",
+                                    "combine_hold_reminders": true,
+                                    "use_email_send_as": true,
+                                    "email_send_as_domains": "sint nisi",
+                                    "billing_start_date": "2073-04-20T11:34:54.172Z",
+                                    "include_active_holds_in_release_notice": -31238264,
+                                    "custom_company_label": "exercitation",
+                                    "inline_images_as_attachments": false,
+                                    "license_code": "elit",
+                                    "delegate_clo": true,
+                                    "default_directory_id": 64140164
+                                }
+                            }
+                        }
+                    },
+                    "required": false
+                },
+                "responses": {
+                    "200": {
+                        "description": "A customer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Customer"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "An api error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiError"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ],
+                "x-codegen-request-body-name": "body"
+            }
+        },
+        "/customers/{customer_id}/companies": {
+            "get": {
+                "tags": [
+                    "Customers"
+                ],
+                "summary": "List all companies in a customer",
+                "operationId": "GET_customers-customer_id-companies",
+                "parameters": [
+                    {
+                        "name": "customer_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/companies"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            }
+        },
+        "/customers/{customer_id}/directories": {
+            "get": {
+                "tags": [
+                    "Customers"
+                ],
+                "summary": "List directories",
+                "description": "List all directories under a customer.",
+                "operationId": "GET_customers-customer_id-directories",
+                "parameters": [
+                    {
+                        "name": "customer_id",
+                        "in": "path",
+                        "description": "Customer id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An array of directories",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Directory"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Customers"
+                ],
+                "summary": "Create directory",
+                "description": "Creates a directory under the customer.\n\nRequires admin rights.\n\nDirectories created in this way are \"freestanding\" and do not belong to a specific company, nor are they set as\nthe default directory used for the customer-level CLO.\n\nTo attach this directory to a company, pass the returned id to the company as its directory_id.\n\nTo make this directory the default directory for customer delegation, pass the returned id to the customer as its\ndefault_directory_id.",
+                "operationId": "POST_customers-customer_id-directories",
+                "parameters": [
+                    {
+                        "name": "customer_id",
+                        "in": "path",
+                        "description": "Customer id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "unique_id_type"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "integer",
+                                        "description": "Directory name",
+                                        "format": "int32"
+                                    },
+                                    "unique_id_type": {
+                                        "type": "string",
+                                        "description": "Unique id key type ('uid_email', 'uid_employee_id', 'uid_none')"
+                                    },
+                                    "custodian_ids_to_move": {
+                                        "type": "array",
+                                        "description": "Custodian ids to move.\n\nCustodians cannot be moved if the directory to which would be moved causes them to lose access to matters to\nwhich they are attached.\n",
+                                        "items": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "A directory",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Directory"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "An api error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            }
+        },
+        "/customers/{customer_id}/directories/{directory_id}": {
+            "get": {
+                "tags": [
+                    "Customers"
+                ],
+                "summary": "Display directory",
+                "description": "Displays information about a directory.",
+                "operationId": "GET_customers-customer_id-directories-directory_id",
+                "parameters": [
+                    {
+                        "name": "customer_id",
+                        "in": "path",
+                        "description": "Customer id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "directory_id",
+                        "in": "path",
+                        "description": "Directory id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A directory",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Directory"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Customers"
+                ],
+                "summary": "Update directory",
+                "description": "Updates a directory.",
+                "operationId": "PATCH_customers-customer_id-directories-directory_id",
+                "parameters": [
+                    {
+                        "name": "customer_id",
+                        "in": "path",
+                        "description": "Customer id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "directory_id",
+                        "in": "path",
+                        "description": "Directory id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A directory",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Directory"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "An api error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            }
+        },
+        "/companies": {
+            "post": {
+                "tags": [
+                    "Companies"
+                ],
+                "summary": "Create Companies",
+                "operationId": "POST_companies",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "maxLength": 255,
+                                        "type": "string"
+                                    },
+                                    "customer_id": {
+                                        "minimum": 0,
+                                        "type": "integer"
+                                    },
+                                    "notes": {
+                                        "maxLength": 65535,
+                                        "type": "string"
+                                    },
+                                    "number": {
+                                        "maxLength": 255,
+                                        "type": "string"
+                                    },
+                                    "contact_name": {
+                                        "maxLength": 255,
+                                        "type": "string"
+                                    },
+                                    "contact_email": {
+                                        "maxLength": 30,
+                                        "type": "string"
+                                    },
+                                    "contact_phone": {
+                                        "maxLength": 255,
+                                        "type": "string"
+                                    },
+                                    "address_1": {
+                                        "maxLength": 255,
+                                        "type": "string"
+                                    },
+                                    "address_2": {
+                                        "maxLength": 255,
+                                        "type": "string"
+                                    },
+                                    "city": {
+                                        "maxLength": 255,
+                                        "type": "string"
+                                    },
+                                    "state": {
+                                        "maxLength": 2,
+                                        "type": "string"
+                                    },
+                                    "zip": {
+                                        "maxLength": 10,
+                                        "type": "string"
+                                    },
+                                    "email_reply_to": {
+                                        "maxLength": 255,
+                                        "type": "string"
+                                    },
+                                    "email_display_name": {
+                                        "maxLength": 100,
+                                        "type": "string"
+                                    },
+                                    "combine_hold_reminders": {
+                                        "type": "boolean"
+                                    },
+                                    "include_active_holds_in_release_notice": {
+                                        "type": "integer",
+                                        "description": ""
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "required": false
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/companies"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ],
+                "x-codegen-request-body-name": "body"
+            }
+        },
+        "/companies/{id}": {
+            "get": {
+                "tags": [
+                    "Companies"
+                ],
+                "summary": "Get a single company",
+                "operationId": "GET_companies-id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/companies"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Companies"
+                ],
+                "summary": "Update Companies",
+                "operationId": "PATCH_companies-id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "maxLength": 255,
+                                        "type": "string"
+                                    },
+                                    "customer_id": {
+                                        "minimum": 0,
+                                        "type": "integer"
+                                    },
+                                    "notes": {
+                                        "maxLength": 65535,
+                                        "type": "string"
+                                    },
+                                    "number": {
+                                        "maxLength": 255,
+                                        "type": "string"
+                                    },
+                                    "contact_name": {
+                                        "maxLength": 255,
+                                        "type": "string"
+                                    },
+                                    "contact_email": {
+                                        "maxLength": 30,
+                                        "type": "string"
+                                    },
+                                    "contact_phone": {
+                                        "maxLength": 255,
+                                        "type": "string"
+                                    },
+                                    "address_1": {
+                                        "maxLength": 255,
+                                        "type": "string"
+                                    },
+                                    "address_2": {
+                                        "maxLength": 255,
+                                        "type": "string"
+                                    },
+                                    "city": {
+                                        "maxLength": 255,
+                                        "type": "string"
+                                    },
+                                    "state": {
+                                        "maxLength": 2,
+                                        "type": "string"
+                                    },
+                                    "zip": {
+                                        "maxLength": 10,
+                                        "type": "string"
+                                    },
+                                    "email_reply_to": {
+                                        "maxLength": 255,
+                                        "type": "string"
+                                    },
+                                    "email_display_name": {
+                                        "maxLength": 100,
+                                        "type": "string"
+                                    },
+                                    "combine_hold_reminders": {
+                                        "type": "boolean"
+                                    },
+                                    "include_active_holds_in_release_notice": {
+                                        "type": "integer",
+                                        "description": ""
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "required": false
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/companies"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ],
+                "x-codegen-request-body-name": "body"
+            }
+        },
+        "/companies/{company_id}/matters": {
+            "get": {
+                "tags": [
+                    "Companies"
+                ],
+                "summary": "List all matters in a company",
+                "operationId": "GET_companies-company_id-matters",
+                "parameters": [
+                    {
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/matter"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Matters"
+                ],
+                "summary": "Create a matter",
+                "operationId": "POST_companies-company_id-matters",
+                "parameters": [
+                    {
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "maxLength": 1024,
+                                        "type": "string"
+                                    },
+                                    "number": {
+                                        "maxLength": 50,
+                                        "type": "string"
+                                    },
+                                    "date_start": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "date_end": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "notes": {
+                                        "maxLength": 65535,
+                                        "type": "string"
+                                    },
+                                    "caption": {
+                                        "maxLength": 65535,
+                                        "type": "string"
+                                    },
+                                    "department": {
+                                        "maxLength": 255,
+                                        "type": "string"
+                                    },
+                                    "business_unit": {
+                                        "maxLength": 255,
+                                        "type": "string"
+                                    },
+                                    "date_created": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "date_modified": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    }
+                                },
+                                "example": {
+                                    "name": "Test Matter"
+                                }
+                            }
+                        }
+                    },
+                    "required": false
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/matter"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ],
+                "x-codegen-request-body-name": "body"
+            }
+        },
+        "/companies/{company_id}/custodians": {
+            "get": {
+                "tags": [
+                    "Companies"
+                ],
+                "summary": "List all custodians in a company",
+                "description": "List all custodians in a company",
+                "operationId": "GET_companies-company_id-custodians",
+                "parameters": [
+                    {
+                        "name": "company_id",
+                        "in": "path",
+                        "description": "Company id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An array of custodians",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Custodians"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Companies"
+                ],
+                "summary": "Synchronize custodians to a company",
+                "description": "Synchronizes Custodians to the Directory associated with the Company.\n\nCustodians are uniquely identified by the `unique_id_type` of the associated Directory. If no `unique_id_type` is set on the Directory, the sync operation defaults to the Custodian's `email` as its unique id. (Currently, this data can only be retrieved from the TotalDiscovery Web UI.)\n\nWhen the sync operation occurs, TotalDiscovery tries to match each supplied Custodian by its unique id to an existing Custodian in the requisite Directory. If a Custodian is found, all submitted attributes for that Custodian are updated to the supplied values, leaving other attributes unchanged. If no Custodian is found, then a new Custodian is created with the submitted attributes.",
+                "operationId": "POST_companies-company_id-custodians",
+                "parameters": [
+                    {
+                        "name": "company_id",
+                        "in": "path",
+                        "description": "Company id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "custodians": {
+                                        "$ref": "#/components/schemas/Custodians"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "required": false
+                },
+                "responses": {
+                    "200": {
+                        "description": "No response",
+                        "content": {}
+                    },
+                    "422": {
+                        "description": "An array of custodian sync errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CustodianSyncError"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ],
+                "x-codegen-request-body-name": "body"
+            }
+        },
+        "/companies/{company_id}/unique_id/dry_run/{key_type}": {
+            "get": {
+                "tags": [
+                    "Companies"
+                ],
+                "summary": "Validate unique id",
+                "description": "Validate unique id conflicts",
+                "operationId": "GET_companies-company_id-unique_id-dry_run-key_type",
+                "parameters": [
+                    {
+                        "name": "company_id",
+                        "in": "path",
+                        "description": "Company id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "key_type",
+                        "in": "path",
+                        "description": "Unique id key type (email or employee id)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "uid_email",
+                                "uid_employee_id",
+                                "uid_none"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An array of unique id conflicts",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/UniqueIdConflict"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            }
+        },
+        "/companies/{company_id}/custodians/locate": {
+            "get": {
+                "tags": [
+                    "Companies"
+                ],
+                "summary": "Find a custodian",
+                "description": "Finds a custodian by their Unique ID",
+                "operationId": "GET_companies-company_id-custodians-locate",
+                "parameters": [
+                    {
+                        "name": "company_id",
+                        "in": "path",
+                        "description": "Company id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID of the custodian",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A custodian",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Custodian"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {}
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            }
+        },
+        "/companies/{company_id}/custodians/traits": {
+            "get": {
+                "tags": [
+                    "Companies",
+                    "Edge"
+                ],
+                "summary": "List unique trait names for all custodians in a company",
+                "description": "List all unique trait names for all custodians in a company.",
+                "operationId": "GET_companies-company_id-custodians-traits",
+                "parameters": [
+                    {
+                        "name": "company_id",
+                        "in": "path",
+                        "description": "Company id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A trait names response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TraitNamesResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            }
+        },
+        "/companies/{company_id}/custodians/traits/{trait_name}": {
+            "get": {
+                "tags": [
+                    "Companies",
+                    "Edge"
+                ],
+                "summary": "List unique trait values for a trait name for all custodians in a company",
+                "description": "List all unique trait values for a trait name for all custodians in a company",
+                "operationId": "GET_companies-company_id-custodians-traits-trait_name",
+                "parameters": [
+                    {
+                        "name": "company_id",
+                        "in": "path",
+                        "description": "Company id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "trait_name",
+                        "in": "path",
+                        "description": "Trait name (e.g. 'Group')",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A hash map array of trait name to trait values",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/traitvaluesresponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            }
+        },
+        "/companies/{company_id}/custodians/traits/{trait_name}/sync": {
+            "post": {
+                "tags": [
+                    "Companies",
+                    "Edge"
+                ],
+                "summary": "Sync traits for a company's custodians by unique_id",
+                "description": "Sync traits for a company using custodian's unique_id and a given trait name.",
+                "operationId": "POST_companies-company_id-custodians-traits-trait_name-sync",
+                "parameters": [
+                    {
+                        "name": "company_id",
+                        "in": "path",
+                        "description": "Company id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "trait_name",
+                        "in": "path",
+                        "description": "Trait name (e.g. 'Group')",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/synctraitrequest"
+                            }
+                        }
+                    },
+                    "required": false
+                },
+                "responses": {
+                    "200": {
+                        "description": "Nothing returned.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "A trait sync error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TraitSyncError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ],
+                "x-codegen-request-body-name": "body"
+            }
+        },
+        "/companies/{company_id}/directory": {
+            "get": {
+                "tags": [
+                    "Companies"
+                ],
+                "summary": "Display directory",
+                "description": "Displays information about a directory.",
+                "operationId": "GET_companies-company_id-directory",
+                "parameters": [
+                    {
+                        "name": "company_id",
+                        "in": "path",
+                        "description": "Company id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A directory",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Directory"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Companies"
+                ],
+                "summary": "Create directory",
+                "description": "Creates a directory under the company.\n\nRequires admin rights.\n\nDirectories created in this way are attached to the company, and will become that company's CLO. They are also\nlinked to the company's customer, but are not set as the default directory used for the customer-level CLO.",
+                "operationId": "POST_companies-company_id-directory",
+                "parameters": [
+                    {
+                        "name": "company_id",
+                        "in": "path",
+                        "description": "Company id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "unique_id_type"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "integer",
+                                        "description": "Directory name",
+                                        "format": "int32"
+                                    },
+                                    "unique_id_type": {
+                                        "type": "string",
+                                        "description": "Unique id key type ('uid_email', 'uid_employee_id', 'uid_none')"
+                                    },
+                                    "custodian_ids_to_move": {
+                                        "type": "array",
+                                        "description": "Custodian ids to move.\n\nCustodians cannot be moved if the directory to which they would be moved causes them to lose access to matters to\nwhich they are attached.\n",
+                                        "items": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "A directory",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Directory"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "An api error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Companies"
+                ],
+                "summary": "Update directory",
+                "description": "Updates a directory.",
+                "operationId": "PATCH_companies-company_id-directory",
+                "parameters": [
+                    {
+                        "name": "company_id",
+                        "in": "path",
+                        "description": "Company id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A directory",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Directory"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "An api error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            }
+        },
+        "/companies/{company_id}/legal_holds": {
+            "get": {
+                "tags": [
+                    "Legal Holds"
+                ],
+                "summary": "List legal holds in a company",
+                "operationId": "GET_companies-company_id-legal_holds",
+                "parameters": [
+                    {
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "schema": {
+                            "maximum": 100,
+                            "minimum": 0,
+                            "type": "number",
+                            "default": 100.0
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "schema": {
+                            "minimum": 0,
+                            "type": "number",
+                            "default": 0.0
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/legal_hold_extended"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            }
+        },
+        "/companies/{company_id}/legal_holds/audits": {
+            "get": {
+                "tags": [
+                    "Legal Holds"
+                ],
+                "summary": "List legal hold status audits in a company",
+                "operationId": "GET_companies-company_id-legal_holds-audits",
+                "parameters": [
+                    {
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/legal_hold_status_audit"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            }
+        },
+        "/companies/{company_id}/legal_holds/stats": {
+            "get": {
+                "tags": [
+                    "Legal Holds"
+                ],
+                "summary": "Show legal hold stats for a company",
+                "operationId": "GET_companies-company_id-legal_holds-stats",
+                "parameters": [
+                    {
+                        "name": "company_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/legal_hold_stats"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            }
+        },
+        "/matters/{matter_id}": {
+            "get": {
+                "tags": [
+                    "Matters"
+                ],
+                "summary": "Get a single matter",
+                "operationId": "GET_matters-matter_id",
+                "parameters": [
+                    {
+                        "name": "matter_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/matter"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Matters"
+                ],
+                "summary": "Update a matter",
+                "operationId": "PATCH_matters-matter_id",
+                "parameters": [
+                    {
+                        "name": "matter_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "maxLength": 1024,
+                                        "type": "string"
+                                    },
+                                    "number": {
+                                        "maxLength": 50,
+                                        "type": "string"
+                                    },
+                                    "date_start": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "date_end": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "notes": {
+                                        "maxLength": 65535,
+                                        "type": "string"
+                                    },
+                                    "caption": {
+                                        "maxLength": 65535,
+                                        "type": "string"
+                                    },
+                                    "department": {
+                                        "maxLength": 255,
+                                        "type": "string"
+                                    },
+                                    "business_unit": {
+                                        "maxLength": 255,
+                                        "type": "string"
+                                    },
+                                    "company_id": {
+                                        "minimum": 0,
+                                        "type": "integer"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "required": false
+                },
+                "responses": {
+                    "default": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ],
+                "x-codegen-request-body-name": "body"
+            }
+        },
+        "/matters/{matter_id}/custodians": {
+            "get": {
+                "tags": [
+                    "Matters"
+                ],
+                "summary": "List all custodians in a matter",
+                "operationId": "GET_matters-matter_id-custodians",
+                "parameters": [
+                    {
+                        "name": "matter_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "schema": {
+                            "maximum": 100,
+                            "minimum": 0,
+                            "type": "number",
+                            "default": 100.0
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "schema": {
+                            "minimum": 0,
+                            "type": "number",
+                            "default": 0.0
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Custodian"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            }
+        },
+        "/matters/{matter_id}/collections": {
+            "get": {
+                "tags": [
+                    "Matters"
+                ],
+                "summary": "List all collections",
+                "operationId": "GET_matters-matter_id-collections",
+                "parameters": [
+                    {
+                        "name": "matter_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "minimum": 0,
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/collection-output"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            }
+        },
+        "/matters/{matter_id}/custodians/locate": {
+            "get": {
+                "tags": [
+                    "Matters"
+                ],
+                "summary": "Finds a custodian by their Unique ID",
+                "description": "Finds a custodian by their Unique ID",
+                "operationId": "GET_matters-matter_id-custodians-locate",
+                "parameters": [
+                    {
+                        "name": "matter_id",
+                        "in": "path",
+                        "description": "Matter id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID of the custodian",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A custodian",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Custodian"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {}
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            }
+        },
+        "/matters/{matter_id}/legal_holds": {
+            "get": {
+                "tags": [
+                    "Legal Holds"
+                ],
+                "summary": "List legal holds in a matter",
+                "operationId": "GET_matters-matter_id-legal_holds",
+                "parameters": [
+                    {
+                        "name": "matter_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "schema": {
+                            "maximum": 100,
+                            "minimum": 0,
+                            "type": "number",
+                            "default": 100.0
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "schema": {
+                            "minimum": 0,
+                            "type": "number",
+                            "default": 0.0
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/legal_hold_extended"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            }
+        },
+        "/matters/{matter_id}/legal_holds/audits": {
+            "get": {
+                "tags": [
+                    "Legal Holds"
+                ],
+                "summary": "List legal hold status audits in a matter",
+                "operationId": "GET_matters-matter_id-legal_holds-audits",
+                "parameters": [
+                    {
+                        "name": "matter_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/legal_hold_status_audit"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            }
+        },
+        "/matters/{matter_id}/legal_holds/stats": {
+            "get": {
+                "tags": [
+                    "Legal Holds"
+                ],
+                "summary": "Show legal hold stats for a matter",
+                "operationId": "GET_matters-matter_id-legal_holds-stats",
+                "parameters": [
+                    {
+                        "name": "matter_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/legal_hold_stats"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            }
+        },
+        "/legal_holds/{id}": {
+            "get": {
+                "tags": [
+                    "Legal Holds"
+                ],
+                "summary": "Display legal hold",
+                "operationId": "GET_legal_holds-id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/legal_hold_extended"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            }
+        },
+        "/legal_holds/{id}/audits": {
+            "get": {
+                "tags": [
+                    "Legal Holds"
+                ],
+                "summary": "List legal hold status audits for a legal hold",
+                "operationId": "GET_legal_holds-id-audits",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/legal_hold_status_audit"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            }
+        },
+        "/collections/{collection_id}": {
+            "get": {
+                "tags": [
+                    "Collections"
+                ],
+                "summary": "Get Collection",
+                "operationId": "GET_collections-collection_id",
+                "parameters": [
+                    {
+                        "name": "collection_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "show_internal_ids",
+                        "in": "query",
+                        "description": "If appended, will show the Collection Server ID and Pocoa Tag. These are internal IDs, but knowing them can be helpful in getting support. \n\nNote: Please assume these values will change or be removed in the future. ",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/collection-output"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            }
+        },
+        "/directories": {
+            "get": {
+                "tags": [
+                    "Directories"
+                ],
+                "summary": "List the directories",
+                "description": "List all directories that you have permission to view.",
+                "operationId": "GET_directories",
+                "responses": {
+                    "200": {
+                        "description": "An array of directories",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Directory"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            }
+        },
+        "/directories/{directory_id}": {
+            "get": {
+                "tags": [
+                    "Directories"
+                ],
+                "summary": "Display a directory",
+                "description": "Displays information about a directory.",
+                "operationId": "GET_directories-directory_id",
+                "parameters": [
+                    {
+                        "name": "directory_id",
+                        "in": "path",
+                        "description": "Directory id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A directory",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Directory"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Directories"
+                ],
+                "summary": "Update directory",
+                "description": "Updates a directory.",
+                "operationId": "PATCH_directories-directory_id",
+                "parameters": [
+                    {
+                        "name": "directory_id",
+                        "in": "path",
+                        "description": "Directory id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A directory",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Directory"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "An api error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            }
+        },
+        "/searches/{search_id}": {
+            "get": {
+                "tags": [
+                    "Searches"
+                ],
+                "summary": "Get a single search",
+                "operationId": "GET_searches-search_id",
+                "parameters": [
+                    {
+                        "name": "search_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "diag",
+                        "in": "query",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/search"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "X-AUTH-TOKEN": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "synctraitrequest": {
+                "title": "SyncTraitRequest",
+                "type": "object",
+                "properties": {
+                    "trait_value": {
+                        "type": "string"
+                    },
+                    "custodian_unique_ids": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "traitvaluesresponse": {
+                "title": "TraitValuesResponse",
+                "type": "object",
+                "properties": {
+                    "trait_name": {
+                        "type": "string"
+                    },
+                    "trait_values": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "hold_notice": {
+                "title": "HoldNotice",
+                "type": "object",
+                "properties": {
+                    "body": {
+                        "type": "string"
+                    },
+                    "draft": {
+                        "type": "boolean"
+                    },
+                    "subject": {
+                        "type": "string"
+                    },
+                    "ask_question": {
+                        "type": "boolean"
+                    },
+                    "hold_notice_carbon_copies_attibutes": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/hold_notice_carbon_copy"
+                        }
+                    },
+                    "attachments_attributes": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/attachment"
+                        }
+                    },
+                    "resetting": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "companies": {
+                "title": "Companies",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "customer_id": {
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "name": {
+                        "maxLength": 255,
+                        "type": "string"
+                    },
+                    "contact_name": {
+                        "maxLength": 255,
+                        "type": "string"
+                    },
+                    "contact_email": {
+                        "maxLength": 30,
+                        "type": "string"
+                    },
+                    "contact_phone": {
+                        "maxLength": 255,
+                        "type": "string"
+                    },
+                    "address_1": {
+                        "maxLength": 255,
+                        "type": "string"
+                    },
+                    "address_2": {
+                        "maxLength": 255,
+                        "type": "string"
+                    },
+                    "city": {
+                        "maxLength": 255,
+                        "type": "string"
+                    },
+                    "state": {
+                        "maxLength": 2,
+                        "type": "string"
+                    },
+                    "zip": {
+                        "maxLength": 10,
+                        "type": "string"
+                    },
+                    "notes": {
+                        "maxLength": 65535,
+                        "type": "string"
+                    },
+                    "directory_id": {
+                        "minimum": 0,
+                        "type": "integer"
+                    }
+                }
+            },
+            "CustodianSyncError": {
+                "title": "CustodianSyncError",
+                "type": "object",
+                "properties": {
+                    "custodian_id": {
+                        "type": "integer"
+                    },
+                    "message": {
+                        "type": "string"
+                    }
+                }
+            },
+            "TraitNamesResponse": {
+                "title": "TraitNamesResponse",
+                "type": "object",
+                "properties": {
+                    "trait_names": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "release_notice": {
+                "title": "ReleaseNotice",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/notice"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "include_active_holds_in_release_notice": {
+                                "type": "boolean"
+                            }
+                        }
+                    }
+                ]
+            },
+            "UniqueIdConflict": {
+                "title": "UniqueIdConflict",
+                "type": "object",
+                "properties": {
+                    "custodian_ids": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    "conflict": {
+                        "type": "string"
+                    }
+                }
+            },
+            "HashMap": {
+                "title": "HashMap",
+                "required": [
+                    "key"
+                ],
+                "type": "object",
+                "properties": {
+                    "key": {
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": {
+                    "type": "string"
+                }
+            },
+            "Directory": {
+                "title": "Directory",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "customer_id": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "CustodianMergeError": {
+                "title": "CustodianMergeError",
+                "type": "object",
+                "properties": {
+                    "custodian_id": {
+                        "type": "integer"
+                    },
+                    "message": {
+                        "type": "string"
+                    }
+                }
+            },
+            "legal_hold_with_matter": {
+                "title": "LegalHoldWithMatter",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/legal_hold"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "matter": {
+                                "$ref": "#/components/schemas/matter"
+                            }
+                        }
+                    }
+                ]
+            },
+            "hold_notice_carbon_copy": {
+                "title": "HoldNoticeCarbonCopy",
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    },
+                    "bcc": {
+                        "type": "string"
+                    }
+                }
+            },
+            "TraitSyncError": {
+                "title": "TraitSyncError",
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Custodian": {
+                "title": "Custodian",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "phone": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "location": {
+                        "type": "string"
+                    },
+                    "department": {
+                        "type": "string"
+                    },
+                    "notes": {
+                        "type": "string"
+                    },
+                    "supervisor_name": {
+                        "type": "string"
+                    },
+                    "supervisor_email": {
+                        "type": "string"
+                    },
+                    "first_name": {
+                        "type": "string"
+                    },
+                    "last_name": {
+                        "type": "string"
+                    },
+                    "function": {
+                        "type": "string"
+                    },
+                    "business": {
+                        "type": "string"
+                    },
+                    "country": {
+                        "type": "string"
+                    },
+                    "employee_type": {
+                        "type": "string"
+                    },
+                    "employee_status": {
+                        "type": "string"
+                    },
+                    "employee_identifier": {
+                        "type": "string",
+                        "description": "Formerly employee_number."
+                    },
+                    "external_sync": {
+                        "type": "boolean"
+                    },
+                    "directory_id": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "attachment": {
+                "title": "Attachment",
+                "required": [
+                    "file"
+                ],
+                "type": "object",
+                "properties": {
+                    "file": {
+                        "type": "string",
+                        "description": "File to upload, in binary.",
+                        "format": "binary"
+                    }
+                },
+                "example": {
+                    "displayName": "marc"
+                }
+            },
+            "notice": {
+                "title": "Notice",
+                "type": "object",
+                "properties": {
+                    "subject": {
+                        "type": "string"
+                    },
+                    "body": {
+                        "type": "string"
+                    },
+                    "attachments_attributes": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/attachment"
+                        }
+                    },
+                    "notice_frequency_id": {
+                        "type": "integer"
+                    },
+                    "active": {
+                        "type": "boolean"
+                    },
+                    "last_modified_by": {
+                        "type": "string"
+                    },
+                    "draft": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "collection-output": {
+                "title": "Collection",
+                "required": [
+                    "id"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "matter_id": {
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "custodian_id": {
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "name": {
+                        "maxLength": 255,
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "collection_start_date": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "collection_end_date": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "status_type": {
+                        "type": "string"
+                    },
+                    "item_count": {
+                        "type": "integer"
+                    },
+                    "item_size_in_bytes": {
+                        "type": "integer"
+                    },
+                    "custodian_name": {
+                        "maxLength": 255,
+                        "type": "string"
+                    }
+                }
+            },
+            "search": {
+                "title": "Search",
+                "required": [
+                    "id",
+                    "matter_id",
+                    "name"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "matter_id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "maxLength": 100,
+                        "type": "string"
+                    },
+                    "query": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "locked_input_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "locked_query_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "delivered": {
+                        "type": "boolean"
+                    },
+                    "diag": {
+                        "type": "object",
+                        "properties": {
+                            "full_query": {
+                                "type": "object",
+                                "properties": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "legal_hold_extended": {
+                "title": "LegalHoldExtended",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/legal_hold_with_matter"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "custodians_legal_holds": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "custodian": {
+                                            "$ref": "#/components/schemas/Custodian"
+                                        },
+                                        "legal_hold_status": {
+                                            "type": "object",
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "is_on_hold": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        "sent_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "acknowledged_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "released_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "last_hold_reminder_sent_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "last_acknowledgement_reminder_sent_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "error": {
+                                            "type": "boolean"
+                                        },
+                                        "escalation_error": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ]
+            },
+            "CustodianMergeHistory": {
+                "title": "CustodianMergeHistory",
+                "type": "object",
+                "properties": {
+                    "custodian_id": {
+                        "type": "integer"
+                    },
+                    "origin_custodian_id": {
+                        "type": "integer"
+                    },
+                    "operation": {
+                        "type": "string"
+                    },
+                    "affected_id": {
+                        "type": "integer"
+                    },
+                    "affected_type": {
+                        "type": "string"
+                    }
+                }
+            },
+            "matter_contact": {
+                "title": "Matter Contact",
+                "required": [
+                    "created_at",
+                    "id",
+                    "updated_at"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "info": {
+                        "maxLength": 255,
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "Custodians": {
+                "title": "Custodians",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/Custodian"
+                }
+            },
+            "legal_hold": {
+                "title": "LegalHold",
+                "required": [
+                    "created_at",
+                    "custodians_legal_hold_ids",
+                    "draft",
+                    "id",
+                    "matter_id",
+                    "name",
+                    "updated_at"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "matter_id": {
+                        "type": "integer"
+                    },
+                    "custodians_legal_hold_ids": {
+                        "type": "array",
+                        "items": {
+                            "type": "object"
+                        }
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "draft": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "Customer": {
+                "title": "Customer",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "delegate_clo": {
+                        "type": "boolean",
+                        "description": "`true`: Each Company has it's own Directory of Custodians\n`false`: There is a master Directory of Custodians on the Customer level, but individual Companies can override it and have their own Directory of Custodians",
+                        "default": false
+                    },
+                    "default_directory_id": {
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "legal_hold_status_audit": {
+                "title": "LegalHoldStatusAudit",
+                "type": "object",
+                "properties": {
+                    "status_type": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "legal_hold": {
+                        "$ref": "#/components/schemas/legal_hold_with_matter"
+                    },
+                    "custodian": {
+                        "$ref": "#/components/schemas/Custodian"
+                    }
+                }
+            },
+            "legal_hold_stats": {
+                "title": "LegalHoldStats",
+                "required": [
+                    "active_legal_holds",
+                    "custodians_on_hold",
+                    "released_legal_holds",
+                    "sent_legal_holds",
+                    "total_not_acknowledged"
+                ],
+                "type": "object",
+                "properties": {
+                    "sent_legal_holds": {
+                        "type": "integer",
+                        "description": "How many legal holds have sent notification out to custodians. Note: this count will include legal holds that have been released, as they had sent a notice in their past"
+                    },
+                    "active_legal_holds": {
+                        "type": "integer",
+                        "description": "The count of holds that have at least one active custodian"
+                    },
+                    "released_legal_holds": {
+                        "type": "integer",
+                        "description": "The count of holds that have all custodians released."
+                    },
+                    "custodians_on_hold": {
+                        "type": "integer",
+                        "description": "The total *unique* count of custodians on hold"
+                    },
+                    "total_not_acknowledged": {
+                        "type": "integer",
+                        "description": "Total *unique* count of custodians that have at least one hold they are, and they have not acknowledged"
+                    }
+                },
+                "example": {
+                    "sent_legal_holds": 45,
+                    "active_legal_holds": 23,
+                    "released_legal_holds": 20,
+                    "custodians_on_hold": 147,
+                    "total_not_acknowledged": 356
+                }
+            },
+            "legal_hold_create_request": {
+                "title": "LegalHoldCreateRequest",
+                "type": "object",
+                "properties": {
+                    "legal_hold": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "draft": {
+                                "type": "boolean"
+                            },
+                            "hold_notice_attributes": {
+                                "$ref": "#/components/schemas/hold_notice"
+                            },
+                            "hold_reminder_notice_attributes": {
+                                "$ref": "#/components/schemas/notice"
+                            },
+                            "acknowledgement_reminder_notice_attributes": {
+                                "$ref": "#/components/schemas/notice"
+                            },
+                            "escalation_notice_attributes": {
+                                "$ref": "#/components/schemas/notice"
+                            },
+                            "release_notice_attributes": {
+                                "$ref": "#/components/schemas/release_notice"
+                            },
+                            "custodians": {
+                                "type": "array",
+                                "items": {
+                                    "type": "integer"
+                                }
+                            },
+                            "custodians_to_release": {
+                                "type": "array",
+                                "items": {
+                                    "type": "integer"
+                                }
+                            },
+                            "questionnaire_ids": {
+                                "type": "array",
+                                "items": {
+                                    "type": "integer"
+                                }
+                            },
+                            "include_questionnaire": {
+                                "type": "boolean"
+                            },
+                            "history": {
+                                "$ref": "#/components/schemas/HashMap"
+                            }
+                        }
+                    },
+                    "matter_id": {
+                        "type": "string"
+                    }
+                }
+            },
+            "matter": {
+                "title": "Matter",
+                "required": [
+                    "company_id",
+                    "date_created",
+                    "date_modified",
+                    "id"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "name": {
+                        "maxLength": 1024,
+                        "type": "string"
+                    },
+                    "number": {
+                        "maxLength": 50,
+                        "type": "string"
+                    },
+                    "date_start": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "date_end": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "notes": {
+                        "maxLength": 65535,
+                        "type": "string"
+                    },
+                    "caption": {
+                        "maxLength": 65535,
+                        "type": "string"
+                    },
+                    "department": {
+                        "maxLength": 255,
+                        "type": "string"
+                    },
+                    "business_unit": {
+                        "maxLength": 255,
+                        "type": "string"
+                    },
+                    "date_created": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "date_modified": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "company_id": {
+                        "minimum": 0,
+                        "type": "integer"
+                    },
+                    "matter_contacts": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/matter_contact"
+                        }
+                    }
+                }
+            },
+            "HashMapArray": {
+                "title": "HashMapArray",
+                "required": [
+                    "key"
+                ],
+                "type": "object",
+                "properties": {
+                    "key": {
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ApiError": {
+                "title": "ApiError",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "issues": {
+                        "$ref": "#/components/schemas/HashMap"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "X-AUTH-TOKEN": {
+                "type": "apiKey",
+                "name": "X-AUTH-TOKEN",
+                "in": "header"
+            }
+        }
+    }
+}
